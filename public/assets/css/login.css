@@ -124,5 +124,27 @@ body {
 .login-footer a:hover {
     text-decoration: underline;
 }
+/* Show Password Toggle Styles */
+.password-view {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
 
-/* ---------- Registration Page Styles ---------- */
+.password-wrap input {
+  flex: 1;
+}
+
+.pw-toggle {
+  border: 1px solid #d1d5db;
+  background: #f9fafb;
+  color: #111827;
+  padding: 0.6rem 0.75rem;
+  border-radius: 10px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.pw-toggle:hover {
+  filter: brightness(0.98);
+}
