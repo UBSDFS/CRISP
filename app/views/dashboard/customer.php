@@ -7,7 +7,7 @@
     <title>Customer Dashboard</title>
 
     <!-- Use a dedicated dashboard stylesheet -->
-    <link rel="stylesheet" href="assets/css/dashboard.css">
+    <link rel="stylesheet" href="/customer-complaint-tracking-system/public/assets/css/dashboard.css">
 </head>
 
 <body>
@@ -75,7 +75,7 @@
                 <div class="empty-state">
                     <h3>No complaints yet</h3>
                     <p>When you submit a complaint, it will appear here with status updates.</p>
-                    <a class="btn primary" href="index.php?action=createComplaint">Submit your first complaint</a>
+
                 </div>
             <?php else: ?>
 

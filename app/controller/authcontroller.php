@@ -2,6 +2,14 @@
 //Simple controller
 class AuthController
 {
+    private $userModel; // User model instance
+
+    public function __construct($db)
+    {
+        require_once __DIR__ . '/../model/userModel.php';
+        $this->userModel = new UserModel($db);
+    }
+
     public function showLogin()
     {
         //Initialize variables
@@ -15,8 +23,8 @@ class AuthController
         ];
 
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-            $email = $_POST['email'];
-            $password = $_POST['password'];
+            $email = (string)$_POST['email'];
+            $password = (string)$_POST['password'];
 
             //Validation
             $emailError = $this->emailValidation($email);
@@ -28,20 +36,39 @@ class AuthController
                 $errors['password_error'] = $passwordError;
             }
 
-            //Later, if no errors, check DB, set session, redirect, etc
+            if ($errors['email_error'] === '' && $errors['password_error'] === '') {
+                // Check database for user
+                $user = $this->getUserByEmail((string)$email);
+                if (!$user) {
+                    $errors['email_error'] = 'Invalid email.';
+                } elseif (!password_verify($password, $user['password_hash'])) {
+                    $errors['password_error'] = 'Invalid password.';
+                } else {
+                    $_SESSION['user_id'] = $user['user_id'];
+                    $_SESSION['role'] = $user['role'];
+                    $_SESSION['email'] = $user['email'];
+                    // Redirect to dashboard
+                    header('Location: index.php?action=dashboard');
+                    exit;
+                }
+            }
         }
+
+
 
         //After preparing variables show view
         require __DIR__ . '/../views/auth/login.php';
     }
 
-    public function emailValidation($email){
+    public function emailValidation($email)
+    {
         if (empty($email)) {
             return 'E-Mail is required.';
         }
         return filter_var($email, FILTER_VALIDATE_EMAIL) ? '' : 'Invalid email format.';
     }
-    public function passwordValidation($password){
+    public function passwordValidation($password)
+    {
         if (empty($password)) {
             return 'Password is required.';
         }
@@ -51,5 +78,10 @@ class AuthController
             return 'Password must be at least 6 characters long, contain at least one uppercase letter, and at least one special character.';
         }
         return '';
+    }
+
+    public function getUserByEmail(string $email)
+    {
+        return $this->userModel->getUserByEmail($email);
     }
 }
