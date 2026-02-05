@@ -2,6 +2,14 @@
 //Simple controller
 class RegistrationController
 {
+    private $userModel;
+
+    public function __construct($db)
+    {
+        require_once __DIR__ . '/../model/userModel.php';
+        $this->userModel = new UserModel($db);
+    }
+
     public function registration()
     {
         //Initialize variables
@@ -67,9 +75,50 @@ class RegistrationController
                 $errors['password'] = 'Password required';
             }
 
-            //Later, if no errors, check DB, set session, redirect, etc
-        }
+            // Check if all validations passed
+            $hasErrors = false;
+            foreach ($errors as $error) {
+                if ($error !== '') {
+                    $hasErrors = true;
+                    break;
+                }
+            }
 
+            if (!$hasErrors) {
+                // Check if email already exists
+                $existingUser = $this->userModel->getUserByEmail($email);
+                if ($existingUser) {
+                    $errors['email'] = 'Email already registered';
+                } else {
+                    // Register the user
+                    $result = $this->userModel->registerCustomer(
+                        $email, 
+                        $password, 
+                        $firstName, 
+                        $lastName, 
+                        $streetAddress, 
+                        $city, 
+                        $state, 
+                        $zipCode, 
+                        $phoneNumber
+                    );
+
+                    if ($result['success']) {
+                        // Set session variables
+                        $_SESSION['user_id'] = $result['user_id'];
+                        $_SESSION['role'] = 'customer';
+                        $_SESSION['email'] = $email;
+                        $_SESSION['name'] = $firstName . ' ' . $lastName;
+
+                        // Redirect to dashboard
+                        header('Location: index.php?action=dashboard');
+                        exit;
+                    } else {
+                        $errors['email'] = 'Registration failed: ' . $result['error'];
+                    }
+                }
+            }
+        }
 
         //After preparing variables show view
         require __DIR__ . '/../views/auth/register.php';

@@ -2,6 +2,8 @@
 //Temporary "front controller that just shows the login view
 //No routing yet
 
+session_start();
+
 require_once __DIR__ . '/../app/model/databBase.php';
 require_once __DIR__ . '/../app/controller/authcontroller.php';
 require_once __DIR__ . '/../app/controller/registrationController.php';
@@ -19,7 +21,7 @@ switch ($action) {
         break;
 
     case 'register':
-        (new RegistrationController())->registration();
+        (new RegistrationController($db))->registration();
         break;
 
     case 'dashboard':
