@@ -328,8 +328,6 @@ class ComplaintModel
         return ['ok' => true];
     }
 }
-<<<<<<< HEAD
-=======
 
     // Should only be used by admins/techs to delete duplicate complaints/spam
     public function deleteComplaint(int $complaint_id): array
@@ -449,4 +447,3 @@ public function getAllComplaints(): array
 
 }
 
->>>>>>> cb43b8bc36624bdf7fc28458729cd2667f625150
