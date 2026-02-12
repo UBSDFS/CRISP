@@ -9,7 +9,7 @@ require_once __DIR__ . '/../app/model/database.php';
 require_once __DIR__ . '/../app/controller/authcontroller.php';
 require_once __DIR__ . '/../app/controller/registrationController.php';
 require_once __DIR__ . '/../app/controller/dashboardController.php'; //Connect to authcontroller once verified login
-
+require_once __DIR__ . '/../app/controller/newComplaintController.php';
 
 
 
@@ -33,7 +33,8 @@ switch ($action) {
         break;
     
     case 'createComplaint':
-        
+        (new newComplaintController())->newComplaint();
+        break;
 
 
     default:
