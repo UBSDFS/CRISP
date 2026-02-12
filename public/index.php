@@ -8,6 +8,8 @@ require_once __DIR__ . '/../app/model/database.php';
 require_once __DIR__ . '/../app/model/userModel.php';
 require_once __DIR__ . '/../app/controller/authController.php';
 require_once __DIR__ . '/../app/controller/registrationController.php';
+require_once __DIR__ . '/../app/controller/dashboardController.php'; //Connect to authcontroller once verified login
+require_once __DIR__ . '/../app/controller/newComplaintController.php';
 require_once __DIR__ . '/../app/controller/dashboardController.php';
 require_once __DIR__ . '/../app/controller/profileController.php';
 
@@ -35,6 +37,10 @@ switch ($action) {
 
     case 'dashboard':
         (new DashboardController())->show();
+        break;
+    
+    case 'createComplaint':
+        (new newComplaintController())->newComplaint();
         break;
 
     case 'profile':
