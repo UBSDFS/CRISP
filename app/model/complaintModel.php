@@ -127,7 +127,7 @@ class ComplaintModel
             return ['ok' => false, 'error' => 'Invalid complaint_id.'];
         }
 
-        // If a date is provided, it should be YYYY-MM-DD
+        // Date should be YYYY-MM-DD
         if ($resolution_date !== null) {
             $resolution_date = trim($resolution_date);
             if (!preg_match('/^\d{4}-\d{2}-\d{2}$/', $resolution_date)) {
@@ -183,16 +183,16 @@ class ComplaintModel
             return ['ok' => false, 'error' => 'New note cannot be empty.'];
         }
 
-        // Optional label (ex: "Tech", "Admin", "Kyle", "Ulysses (Tech)")
+        
         $author_label = $author_label !== null ? trim($author_label) : null;
 
-        // Use a transaction so read + write are consistent
+        
         if (!$this->db->begin_transaction()) {
             return ['ok' => false, 'error' => 'Failed to start transaction: ' . $this->db->error];
         }
 
         try {
-            // Read current details
+            
             $selectSql = "SELECT details FROM complaints WHERE complaint_id = ? FOR UPDATE";
             $selectStmt = $this->db->prepare($selectSql);
             if (!$selectStmt) {
@@ -253,7 +253,7 @@ class ComplaintModel
         }
     }
 
-    // Should only be used by admins/techs to delete duplicate complaints
+    
     public function deleteComplaint(int $complaint_id): array
     {
         if ($complaint_id <= 0) {
