@@ -518,7 +518,7 @@ class UserModel
                 $d->close();
 
                 // Ensure customer profile exists (customer_profiles has NOT NULL fields)
-                // Use placeholders that make it obvious admin must update later.
+                // Use placeholders for to admin must update later.
                 $ins = $this->db->prepare(
                     "INSERT INTO customer_profiles (user_id, first_name, last_name, street_address, city, state, zip, phone)
                      VALUES (?, ?, ?, 'TBD', 'TBD', 'NA', '00000', '0000000000')
