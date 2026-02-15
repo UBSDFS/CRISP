@@ -86,7 +86,7 @@ class ComplaintController
             return;
         }
 
-        // TODO: replace this hardcode when product selection is implemented
+        
         $product_id = 1;
 
         $result = $this->complaintModel->createComplaint(
@@ -218,7 +218,7 @@ class ComplaintController
             return;
         }
 
-        // required when resolving
+        
         $resolutionDate = null;
         if ($status === 'resolved') {
             if ($resolutionNotes === '') {
