@@ -1,7 +1,6 @@
 <?php
-// app/views/dashboard/admin.php
 
-// Expect: session already validated in controller
+
 $adminName = trim(($_SESSION['firstName'] ?? '') . ' ' . ($_SESSION['lastName'] ?? ''));
 if ($adminName === '') $adminName = 'Administrator';
 
