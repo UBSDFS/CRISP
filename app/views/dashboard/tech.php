@@ -1,12 +1,5 @@
 <?php
-// app/views/dashboard/tech.php
-// Data comes from DashboardController::tech()
-// Expected variables:
-//   $tech (name,email,role)
-//   $complaints (array of complaint rows assigned to this tech)
-//   $selectedId (int)
-//   $selectedComplaint (complaint row or null)
-//   $filterStatus (string)
+
 
 function statusLabel(string $status): string
 {
@@ -195,7 +188,7 @@ function statusLabel(string $status): string
                     </div>
                 </div>
 
-                <!-- Customer complaint (read-only) -->
+                <!-- Customer complaint -->
                 <div class="complaint-card">
                     <div class="card-top">
                         <span class="badge type">Customer Input</span>
