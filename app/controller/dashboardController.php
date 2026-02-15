@@ -59,7 +59,7 @@ class DashboardController
                 break;
 
             case 'tech':
-                // optional: you can load assigned complaints here too, or call $this->tech()
+                
                 include __DIR__ . '/../views/dashboard/tech.php';
                 break;
 
@@ -95,7 +95,7 @@ class DashboardController
             'role'  => 'tech',
         ];
 
-        // assigned complaints (NOTE: your model currently returns raw rows)
+    
         $complaints = $this->complaintModel->getComplaintsAssignedToTech($techId);
 
         // choose selected complaint
@@ -115,7 +115,7 @@ class DashboardController
             }
         }
 
-        // simple GET filter
+    
         $filterStatus = $_GET['status'] ?? '';
 
         require BASE_PATH . '/app/views/dashboard/tech.php';
