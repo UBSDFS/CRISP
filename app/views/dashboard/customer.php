@@ -89,8 +89,8 @@
                         // image_path from DB (nullable)
                         $img = $c['image_path'] ?? '';
 
-                        // Use status directly for CSS class hooks
-                        // e.g. .badge.status.open, .badge.status.assigned, etc.
+                        
+                
                         $statusClass = preg_replace('/[^a-z_]/', '', $status);
                         ?>
 
