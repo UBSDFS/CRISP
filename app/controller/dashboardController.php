@@ -59,7 +59,7 @@ class DashboardController
                 break;
 
             case 'tech':
-                
+
                 include __DIR__ . '/../views/dashboard/tech.php';
                 break;
 
@@ -95,7 +95,7 @@ class DashboardController
             'role'  => 'tech',
         ];
 
-    
+
         $complaints = $this->complaintModel->getComplaintsAssignedToTech($techId);
 
         // choose selected complaint
@@ -108,14 +108,14 @@ class DashboardController
         if ($selectedId > 0) {
             $r = $this->complaintModel->getComplaintById($selectedId);
             if ($r['ok']) {
-                // enforce: tech can only open assigned
+
                 if ((int)$r['complaint']['tech_id'] === $techId) {
                     $selectedComplaint = $r['complaint'];
                 }
             }
         }
 
-    
+
         $filterStatus = $_GET['status'] ?? '';
 
         require BASE_PATH . '/app/views/dashboard/tech.php';
