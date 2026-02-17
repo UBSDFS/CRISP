@@ -17,8 +17,11 @@ class ComplaintController
         $typesResult = $this->complaintModel->getComplaintTypes();
         $types = $typesResult['ok'] ? $typesResult['types'] : [];
 
+        $productsResult = $this->complaintModel->getProductTypes();
+        $products = $productsResult['ok'] ? $productsResult['products'] : [];
+
         $errors = [];
-        $old = ['complaintTypeId' => '', 'details' => ''];
+        $old = ['complaintTypeId' => '', 'details' => '', 'productId' => ''];
 
         require __DIR__ . '/../views/complaintForm/newComplaintForm.php';
     }
