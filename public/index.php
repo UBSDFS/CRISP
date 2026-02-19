@@ -86,12 +86,13 @@ switch ($action) {
         (new ComplaintController($db))->show();
         break;
 
-    case 'editComplaint':
-        (new ComplaintController($db))->edit();
+    case 'editComplaintCustomer':
+        (new ComplaintController($db))->editCustomer();
         break;
 
-    case 'updateComplaint':
-        (new ComplaintController($db))->update();
+
+    case 'updateCustomerComplaint':
+        (new ComplaintController($db))->updateCustomer();
         break;
     case 'viewComplaint':
         (new ComplaintController($db))->view();

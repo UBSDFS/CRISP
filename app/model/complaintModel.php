@@ -515,4 +515,23 @@ class ComplaintModel
 
         return ['ok' => true, 'types' => $types];
     }
+    public function updateCustomerComplaint(int $complaint_id, int $complaint_type_id, string $details, int $product_id, ?string $image_path): array
+    {
+        $sql = "UPDATE complaints
+            SET complaint_type_id = ?, details = ?, product_id = ?, image_path = ?
+            WHERE complaint_id = ?";
+
+        $stmt = $this->db->prepare($sql);
+        if (!$stmt) {
+            return ['ok' => false, 'error' => $this->db->error];
+        }
+
+        $stmt->bind_param("isisi", $complaint_type_id, $details, $product_id, $image_path, $complaint_id);
+
+        if (!$stmt->execute()) {
+            return ['ok' => false, 'error' => $stmt->error];
+        }
+
+        return ['ok' => true];
+    }
 }

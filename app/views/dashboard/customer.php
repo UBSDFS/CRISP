@@ -84,7 +84,7 @@
 
                         $status = strtolower((string)($c['status'] ?? 'open'));
                         $details = $c['details'] ?? '';
-                        $id = $c['complaint_id'] ?? null;
+                        $id = $c['complaint_id'] ?? 0;
 
                         // image_path from DB (nullable)
                         $img = $c['image_path'] ?? '';
@@ -119,12 +119,6 @@
                                     <a class="link" href="index.php?action=viewComplaint&complaint_id=<?= urlencode((string)$id) ?>">
                                         View Details
                                     </a>
-
-                                    <?php if ($status !== 'resolved'): ?>
-                                        <a class="link" href="index.php?action=editComplaint&complaint_id=<?= urlencode((string)$id) ?>">
-                                            Edit
-                                        </a>
-                                    <?php endif; ?>
                                 </div>
                             </div>
                         </article>

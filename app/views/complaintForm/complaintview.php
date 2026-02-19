@@ -1,92 +1,68 @@
 <?php
-$role = $_SESSION['role'] ?? '';
-$backAction = match ($role) {
-    'admin' => 'admindashboard',
-    'technician' => 'techdashboard',
-    default => 'dashboard',
-};
-
-
-// Validate complaint data with response code and error message if not valid
 if (!isset($complaint) || !is_array($complaint)) {
     http_response_code(500);
     echo "Complaint data not available.";
     exit;
 }
 
-// Extract fields with fallbacks
-$complaintId = $complaint['complaint_id'] ?? $complaint['id'] ?? '';
-$status      = $complaint['status'] ?? '';
-$details     = $complaint['details'] ?? '';
-$createdAt   = $complaint['created_at'] ?? $complaint['createdAt'] ?? '';
-$typeName    = $complaint['complaint_type'] ?? $complaint['type_name'] ?? $complaint['type'] ?? '';
-$productName = $complaint['product_name'] ?? $complaint['product'] ?? '';
+$complaint_id = (int)($complaint['complaint_id'] ?? 0);
+$status       = (string)($complaint['status'] ?? '');
+$details      = (string)($complaint['details'] ?? '');
+$image_path   = (string)($complaint['image_path'] ?? '');
 
-// Handle image path 
-$image = $complaint['imagePath'] ?? $complaint['image_path'] ?? $complaint['image'] ?? '';
+$type_name    = (string)($complaint['complaint_type_name'] ?? $complaint['type_name'] ?? $complaint['complaint_type'] ?? '');
+$product_name = (string)($complaint['product_name'] ?? '');
 
-if ($image && $image[0] !== '/' && !str_starts_with($image, 'http')) {
-    $image = '/uploads/' . ltrim($image, '/');
-}
+$role = $_SESSION['role'] ?? '';
+
+$backAction = match ($role) {
+    'admin' => 'adminDashboard',
+    'technician' => 'techDashboard',
+    default => 'dashboard',
+};
+
+$editAction = ($role === 'customer') ? 'editComplaintCustomer' : 'editComplaint';
 ?>
 
-<div class="page">
-    <div class="card">
-        <div class="card-header">
-            <h1>Complaint #<?= htmlspecialchars((string)$complaintId) ?></h1>
-            <?php if ($status): ?>
-                <span class="badge"><?= htmlspecialchars((string)$status) ?></span>
-            <?php endif; ?>
-        </div>
+<h2>Complaint #<?= htmlspecialchars((string)$complaint_id) ?></h2>
 
-        <div class="grid">
-            <div>
-                <?php if ($typeName): ?>
-                    <p><strong>Type:</strong> <?= htmlspecialchars((string)$typeName) ?></p>
-                <?php endif; ?>
+<?php if ($status !== ''): ?>
+    <p><strong>Status:</strong> <?= htmlspecialchars($status) ?></p>
+<?php endif; ?>
 
-                <?php if ($productName): ?>
-                    <p><strong>Product:</strong> <?= htmlspecialchars((string)$productName) ?></p>
-                <?php endif; ?>
+<?php if ($type_name !== ''): ?>
+    <p><strong>Complaint Type:</strong> <?= htmlspecialchars($type_name) ?></p>
+<?php endif; ?>
 
-                <?php if ($createdAt): ?>
-                    <p><strong>Created:</strong> <?= htmlspecialchars((string)$createdAt) ?></p>
-                <?php endif; ?>
-            </div>
+<?php if ($product_name !== ''): ?>
+    <p><strong>Product:</strong> <?= htmlspecialchars($product_name) ?></p>
+<?php endif; ?>
 
-            <div>
-                <p><strong>Details:</strong></p>
-                <div class="details">
-                    <?= nl2br(htmlspecialchars((string)$details)) ?>
-                </div>
-            </div>
-        </div>
+<p><strong>Description:</strong></p>
+<p><?= nl2br(htmlspecialchars($details)) ?></p>
 
-        <hr>
+<hr>
 
-        <h2>Attached Image</h2>
-        <?php if (!empty($image)): ?>
-            <div class="image-wrap">
-                <img
-                    src="<?= htmlspecialchars((string)$image) ?>"
-                    alt="Complaint image">
-            </div>
-        <?php else: ?>
-            <p><em>No image uploaded for this complaint.</em></p>
-        <?php endif; ?>
+<h3>Image</h3>
+<?php if ($image_path !== ''): ?>
+    <img src="<?= htmlspecialchars($image_path) ?>" alt="Complaint image" style="max-width:600px;width:100%;height:auto;">
+<?php else: ?>
+    <p><em>No image uploaded.</em></p>
+<?php endif; ?>
 
-        <div class="actions">
-            <a class="link" href="index.php?action=<?= urlencode($backAction) ?>">Back</a>
+<hr>
+
+<p>
+    <a class="link" href="index.php?action=<?= urlencode($backAction) ?>">Back</a>
+
+    <?php if ($status !== 'resolved'): ?>
+        <a class="link" href="index.php?action=<?= urlencode($editAction) ?>&id=<?= urlencode((string)$complaint_id) ?>">
+            Edit
+        </a>
+    <?php endif; ?>
+</p>
 
 
-            <?php if (($complaint['status'] ?? '') !== 'resolved'): ?>
-                <a class="link" href="index.php?action=editComplaint&id=<?= urlencode((string)$complaintId) ?>">
-                    Edit
-                </a>
-            <?php endif; ?>
-        </div>
-    </div>
-</div>
 
 <style>
     .page {
