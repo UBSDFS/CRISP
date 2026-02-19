@@ -48,31 +48,31 @@ class RegistrationController
 
             //Basic Validation
             if ($firstName == '') {
-                $errors['firstName'] = 'First Name required';
+                $errors['firstName'] = ' First Name required';
             }
             if ($lastName == '') {
-                $errors['lastName'] = 'Last Name required';
+                $errors['lastName'] = ' Last Name required';
             }
             if ($email == '') {
-                $errors['email'] = 'Email required';
+                $errors['email'] = ' Email required';
             }
             if ($streetAddress == '') {
-                $errors['streetAddress'] = 'Street Address required';
+                $errors['streetAddress'] = ' Street Address required';
             }
             if ($city == '') {
-                $errors['city'] = 'City required';
+                $errors['city'] = ' City required';
             }
             if ($state == '') {
-                $errors['state'] = 'State required';
+                $errors['state'] = ' State required';
             }
             if ($zipCode == '') {
-                $errors['zipCode'] = 'Zip Code required';
+                $errors['zipCode'] = ' Zip Code required';
             }
             if ($phoneNumber == '') {
-                $errors['phoneNumber'] = 'Phone Number required';
+                $errors['phoneNumber'] = ' Phone Number required';
             }
             if ($password == '') {
-                $errors['password'] = 'Password required';
+                $errors['password'] = ' Password required';
             }
 
             // Check if all validations passed
@@ -92,14 +92,14 @@ class RegistrationController
                 } else {
                     // Register the user
                     $result = $this->userModel->registerCustomer(
-                        $email, 
-                        $password, 
-                        $firstName, 
-                        $lastName, 
-                        $streetAddress, 
-                        $city, 
-                        $state, 
-                        $zipCode, 
+                        $email,
+                        $password,
+                        $firstName,
+                        $lastName,
+                        $streetAddress,
+                        $city,
+                        $state,
+                        $zipCode,
                         $phoneNumber
                     );
 

@@ -25,11 +25,11 @@ class ComplaintController
 
         require __DIR__ . '/../views/complaintForm/newComplaintForm.php';
     }
- 
+
     // POST: handle submit
     public function store()
     {
-        
+
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
             header("Location: index.php?action=newComplaint");
             exit;
@@ -40,7 +40,7 @@ class ComplaintController
             header("Location: index.php?action=showLogin");
             exit;
         }
-        
+
 
         $complaint_type_id = (int)($_POST['complaintTypeId'] ?? 0);
         $details = trim($_POST['details'] ?? '');
@@ -52,8 +52,8 @@ class ComplaintController
         if ($details === '') $errors[] = "Description is required.";
         if ($product_id <= 0) $errors[] = 'Please select a product type.';
 
-        
-        
+
+
 
         $image_path = null;
         if (!empty($_FILES['image']) && $_FILES['image']['error'] !== UPLOAD_ERR_NO_FILE) {
@@ -262,5 +262,57 @@ class ComplaintController
 
         header("Location: index.php?action=techDashboard");
         exit;
+    }
+
+    // GET: view complaint details
+    public function view()
+    {
+        $role = $_SESSION['role'] ?? null;
+        $userId = (int)($_SESSION['user_id'] ?? 0);
+
+        if (!$role || $userId <= 0) {
+            header("Location: index.php?action=showLogin");
+            exit;
+        }
+
+
+        $complaintId = (int)($_GET['complaint_id'] ?? 0);
+        if ($complaintId <= 0) {
+            http_response_code(400);
+            echo "Invalid id";
+            return;
+        }
+
+        $result = $this->complaintModel->getComplaintById($complaintId);
+        if (!$result['ok']) {
+            http_response_code(404);
+            echo $result['error'];
+            return;
+        }
+
+        $complaint = $result['complaint'];
+
+        // Authorization
+        if ($role === 'customer' && (int)($complaint['customer_id'] ?? 0) !== $userId) {
+            http_response_code(403);
+            echo "Forbidden";
+            return;
+        }
+
+        if ($role === 'technician' && (int)($complaint['tech_id'] ?? 0) !== $userId) {
+            http_response_code(403);
+            echo "Forbidden";
+            return;
+        }
+
+        // Render complaint details view
+        $viewFile = BASE_PATH . '/app/views/complaintForm/complaintview.php';
+        if (!file_exists($viewFile)) {
+            http_response_code(500);
+            echo "View not found: " . htmlspecialchars($viewFile);
+            return;
+        }
+
+        require $viewFile;
     }
 }

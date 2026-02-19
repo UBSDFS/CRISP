@@ -89,8 +89,8 @@
                         // image_path from DB (nullable)
                         $img = $c['image_path'] ?? '';
 
-                        
-                
+
+
                         $statusClass = preg_replace('/[^a-z_]/', '', $status);
                         ?>
 
@@ -116,12 +116,12 @@
                                 </div>
 
                                 <div class="actions">
-                                    <a class="link" href="index.php?action=viewComplaint&id=<?= urlencode((string)$id) ?>">
+                                    <a class="link" href="index.php?action=viewComplaint&complaint_id=<?= urlencode((string)$id) ?>">
                                         View Details
                                     </a>
 
                                     <?php if ($status !== 'resolved'): ?>
-                                        <a class="link" href="index.php?action=editComplaint&id=<?= urlencode((string)$id) ?>">
+                                        <a class="link" href="index.php?action=editComplaint&complaint_id=<?= urlencode((string)$id) ?>">
                                             Edit
                                         </a>
                                     <?php endif; ?>

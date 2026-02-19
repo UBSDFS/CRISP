@@ -476,7 +476,7 @@ class ComplaintModel
         return ['ok' => true, 'complaints' => $rows];
     }
 
-public function getProductTypes(): array
+    public function getProductTypes(): array
     {
         $sql = "SELECT product_id, name
                 FROM products
@@ -496,7 +496,7 @@ public function getProductTypes(): array
         return ['ok' => true, 'products' => $products];
     }
 
-        public function getComplaintTypes(): array
+    public function getComplaintTypes(): array
     {
         $sql = "SELECT complaint_type_id, name
                 FROM complaint_types

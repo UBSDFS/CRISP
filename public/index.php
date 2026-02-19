@@ -93,6 +93,9 @@ switch ($action) {
     case 'updateComplaint':
         (new ComplaintController($db))->update();
         break;
+    case 'viewComplaint':
+        (new ComplaintController($db))->view();
+        break;
 
 
     // ADMIN ACTIONS
