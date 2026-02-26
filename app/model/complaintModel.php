@@ -421,7 +421,7 @@ class ComplaintModel
             FROM complaints c
             JOIN complaint_types ct ON c.complaint_type_id = ct.complaint_type_id
             WHERE c.tech_id IS NULL
-              AND c.status IN ('open','assigned','in_progress')
+            AND c.status IN ('open','assigned','in_progress')
             ORDER BY c.complaint_id DESC";
 
         $stmt = $this->db->prepare($sql);

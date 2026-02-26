@@ -14,8 +14,8 @@ class UserModel
     public function getUserByEmail(string $email)
     {
         $sql = "SELECT u.user_id, u.email, u.password_hash, u.role,
-                       COALESCE(c.first_name, e.first_name) AS first_name,
-                       COALESCE(c.last_name,  e.last_name)  AS last_name
+                    COALESCE(c.first_name, e.first_name) AS first_name,
+                    COALESCE(c.last_name,  e.last_name)  AS last_name
                 FROM users u
                 LEFT JOIN customer_profiles c ON u.user_id = c.user_id
                 LEFT JOIN employee_profiles e ON u.user_id = e.user_id
@@ -38,9 +38,9 @@ class UserModel
     public function getUserById(int $userId)
     {
         $sql = "SELECT u.user_id, u.email, u.role, u.avatar_path,
-                   COALESCE(c.first_name, e.first_name) AS first_name,
-                   COALESCE(c.last_name,  e.last_name)  AS last_name,
-                   c.street_address, c.city, c.state, c.zip, c.phone
+                COALESCE(c.first_name, e.first_name) AS first_name,
+                COALESCE(c.last_name,  e.last_name)  AS last_name,
+                c.street_address, c.city, c.state, c.zip, c.phone
             FROM users u
             LEFT JOIN customer_profiles c ON u.user_id = c.user_id
             LEFT JOIN employee_profiles e ON u.user_id = e.user_id
@@ -129,7 +129,7 @@ class UserModel
     public function getCustomerById(int $userId): ?array
     {
         $sql = "SELECT u.user_id, u.email, u.role, u.avatar_path,
-                       c.first_name, c.last_name, c.street_address, c.city, c.state, c.zip, c.phone
+                    c.first_name, c.last_name, c.street_address, c.city, c.state, c.zip, c.phone
                 FROM users u
                 JOIN customer_profiles c ON u.user_id = c.user_id
                 WHERE u.user_id = ? AND u.role = 'customer'";
@@ -225,7 +225,7 @@ class UserModel
     public function getAllCustomersWithProfile(): array
     {
         $sql = "SELECT u.user_id, u.email, u.role,
-                       c.first_name, c.last_name, c.street_address, c.city, c.state, c.zip, c.phone
+                    c.first_name, c.last_name, c.street_address, c.city, c.state, c.zip, c.phone
                 FROM users u
                 JOIN customer_profiles c ON u.user_id = c.user_id
                 WHERE u.role = 'customer'
@@ -243,7 +243,7 @@ class UserModel
     public function getEmployeeById(int $userId): ?array
     {
         $sql = "SELECT u.user_id, u.email, u.role, u.avatar_path, 
-                       e.first_name, e.last_name, e.phone_ext, e.level
+                    e.first_name, e.last_name, e.phone_ext, e.level
                 FROM users u
                 JOIN employee_profiles e ON u.user_id = e.user_id
                 WHERE u.user_id = ? AND u.role IN ('tech','admin')";
@@ -339,7 +339,7 @@ class UserModel
     public function getAllEmployeesWithProfile(): array
     {
         $sql = "SELECT u.user_id, u.email, u.role,
-                       e.first_name, e.last_name, e.phone_ext, e.level
+                    e.first_name, e.last_name, e.phone_ext, e.level
                 FROM users u
                 JOIN employee_profiles e ON u.user_id = e.user_id
                 WHERE u.role IN ('tech', 'admin')
@@ -370,12 +370,12 @@ class UserModel
     public function getTechniciansWithOpenCount(): array
     {
         $sql = "SELECT u.user_id, u.email, e.first_name, e.last_name,
-                       COUNT(c.complaint_id) AS open_count
+                    COUNT(c.complaint_id) AS open_count
                 FROM users u
                 JOIN employee_profiles e ON u.user_id = e.user_id
                 LEFT JOIN complaints c
-                  ON c.tech_id = u.user_id
-                 AND c.status IN ('open','assigned','in_progress')
+                ON c.tech_id = u.user_id
+                AND c.status IN ('open','assigned','in_progress')
                 WHERE u.role = 'tech' AND e.level = 'tech'
                 GROUP BY u.user_id, u.email, e.first_name, e.last_name
                 ORDER BY open_count DESC, e.last_name, e.first_name";
@@ -444,7 +444,7 @@ class UserModel
 
             $p = $this->db->prepare(
                 "INSERT INTO employee_profiles (user_id, first_name, last_name, phone_ext, level)
-                 VALUES (?, ?, ?, ?, ?)"
+                VALUES (?, ?, ?, ?, ?)"
             );
             if (!$p)
                 throw new Exception($this->db->error);
@@ -524,7 +524,7 @@ class UserModel
             $userId = $this->db->insert_id;
 
             $profileSql = "INSERT INTO customer_profiles (user_id, first_name, last_name, street_address, city, state, zip, phone)
-                           VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+                        VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
             $profileStmt = $this->db->prepare($profileSql);
             if (!$profileStmt) {
                 throw new Exception("Prepare failed: " . $this->db->error);
@@ -619,8 +619,8 @@ class UserModel
 
                 $ins = $this->db->prepare(
                     "INSERT INTO customer_profiles (user_id, first_name, last_name, street_address, city, state, zip, phone)
-                     VALUES (?, ?, ?, 'TBD', 'TBD', 'NA', '00000', '0000000000')
-                     ON DUPLICATE KEY UPDATE first_name = VALUES(first_name), last_name = VALUES(last_name)"
+                    VALUES (?, ?, ?, 'TBD', 'TBD', 'NA', '00000', '0000000000')
+                    ON DUPLICATE KEY UPDATE first_name = VALUES(first_name), last_name = VALUES(last_name)"
                 );
                 if (!$ins)
                     throw new Exception($this->db->error);
@@ -643,8 +643,8 @@ class UserModel
                 // Ensure employee profile exists
                 $ins = $this->db->prepare(
                     "INSERT INTO employee_profiles (user_id, first_name, last_name, phone_ext, level)
-                     VALUES (?, ?, ?, NULL, ?)
-                     ON DUPLICATE KEY UPDATE first_name = VALUES(first_name), last_name = VALUES(last_name), level = VALUES(level)"
+                    VALUES (?, ?, ?, NULL, ?)
+                    ON DUPLICATE KEY UPDATE first_name = VALUES(first_name), last_name = VALUES(last_name), level = VALUES(level)"
                 );
                 if (!$ins)
                     throw new Exception($this->db->error);
